@@ -14,40 +14,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gazorpazorp.model.Sample;
+import com.gazorpazorp.model.Product;
 import com.gazorpazorp.model.dto.SampleMinimalDto;
 import com.gazorpazorp.model.dtoMapper.SampleMapper;
-import com.gazorpazorp.service.SampleService;
+import com.gazorpazorp.service.ProductService;
 
 @RestController
-@RequestMapping("/samples")
+@RequestMapping("/api/products")
 public class SampleController {
 	
 	@Autowired
-	SampleService sampleService;
+	ProductService productService;
 	
-	@PostMapping
-	public ResponseEntity<Sample> createSample (@RequestBody Sample sample) throws Exception {
-		return Optional.ofNullable(sampleService.createSample(sample))
-				.map(o -> new ResponseEntity<Sample>(o, HttpStatus.OK))
-				.orElseThrow(() -> new Exception("Could not create sample!"));
-	}
-	
-	@GetMapping
-	public ResponseEntity<List<SampleMinimalDto>> getAll() throws Exception{
-		return Optional.ofNullable(sampleService.getAllSamples())
-				.map(s -> new ResponseEntity<List<SampleMinimalDto>>
-						(s.stream()
-						.map(sample -> SampleMapper.INSTANCE.sampleToSampleMinimalDto(sample))
-						.collect(Collectors.toList()), HttpStatus.OK)
-					)
-				.orElseThrow(() -> new Exception("Account does not exist"));
-	}
-	
-	@GetMapping("/{sampleId}")
-	public ResponseEntity getSampleById (@PathVariable Long sampleId) throws Exception {
-		return Optional.ofNullable(sampleService.getSampleById(sampleId))
-				.map(s -> new ResponseEntity<Sample>(s, HttpStatus.OK))
+	@GetMapping("/{productId}")
+	public ResponseEntity getSampleById (@PathVariable Long productId) throws Exception {
+		return Optional.ofNullable(productService.getProductById(productId))
+				.map(p -> new ResponseEntity<Product>(p, HttpStatus.OK))
 				.orElseThrow(() -> new Exception("An unknown error has occured."));
 	}
 
