@@ -1,4 +1,4 @@
-package com.gazorpazorp.CatalogService;
+package com.gazorpazorp.ProductService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
