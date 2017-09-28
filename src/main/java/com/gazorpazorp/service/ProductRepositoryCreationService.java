@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.gazorpazorp.client.LCBOClient;
 import com.gazorpazorp.model.Dataset;
 import com.gazorpazorp.model.DatasetResult;
 import com.gazorpazorp.repository.ProductRepository;
@@ -23,13 +24,13 @@ public class ProductRepositoryCreationService extends Thread {
 	ProductRepository productRepo;
 
 	@Autowired
-	ProductService productService;
+	LCBOClient lcboService;
 
 	String key = "MDo1NDQwN2RjYy0wMDhkLTExZTctYWEwNy0yMzI4NjgxOTRjOWU6V2hSaDdoOXBVbjFjTU80cUtBZlpxRkI4UlJDVWcxRWlBUWZZ";
 	String initalDatasetId = "2340";
 	
 	@Autowired
-	Integer latestUpdate;
+	DatasetUpdateMgr updateMgr;
 //	int latestDatasetUpdate = 0;
 
 	@Override
@@ -73,11 +74,12 @@ public class ProductRepositoryCreationService extends Thread {
 		logger.info("Updating to latest dataset");
 		addProducts(latestDataset);
 		removeProducts(latestDataset);
-		latestUpdate=latestDataset.getId();
+		updateMgr.setLatestUpdate(latestDataset.getId());
+		logger.info("Finished initial update. Latest ID updated is " + updateMgr.getLatestUpdate());
 	}
 	
 	private void addProducts(Dataset dataset) {
-		productRepo.saveAll(productService.getProductsById(dataset.getAddedProductIds().stream().map(Object::toString).collect(Collectors.joining(","))));
+		productRepo.saveAll(lcboService.getProductsById(dataset.getAddedProductIds().stream().map(Object::toString).collect(Collectors.joining(","))));
 	}
 	private void removeProducts(Dataset dataset) {
 		dataset.getRemovedProductIds().forEach(id -> productRepo.deleteById(id));

@@ -46,16 +46,11 @@ public class ProductServiceApplication {
 		PRUService.start();
 	}
 	
-	@PostConstruct
-	public void getDbManager(){
-	   DatabaseManagerSwing.main(
-		new String[] { "--url", "jdbc:hsqldb:mem:test://localhost/test", "--user", "SA", "--password", ""});
-	}
-	
-	@Bean
-	public Integer latestUpdate() {
-		return 0;
-	}
+//	@PostConstruct
+//	public void getDbManager(){
+//	   DatabaseManagerSwing.main(
+//		new String[] { "--url", "jdbc:hsqldb:mem:test://localhost/test", "--user", "SA", "--password", ""});
+//	}
 	
 //	@Bean
 //	RequestInterceptor oauth2FeignRequestInterceptor(OAuth2ClientContext context) {
