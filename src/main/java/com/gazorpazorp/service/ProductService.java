@@ -33,7 +33,6 @@ public class ProductService {
 		headers.set(headers.AUTHORIZATION, "Token "+key);
 		HttpEntity entity = new HttpEntity(headers);
 		ProductResult result = restTemplate.exchange("https://www.lcboapi.com/products/"+productId, HttpMethod.GET, entity, ProductResult.class).getBody();
-		System.out.println(result.getResult());
 		return result.getResult();
 	}
 	

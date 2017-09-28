@@ -1,72 +1,11 @@
 package com.gazorpazorp.model;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-//@JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonPropertyOrder({
-//	"id",
-//	"is_dead",
-//	"name",
-//	"tags",
-//	"is_discontinued",
-//	"price_in_cents",
-//	"regular_price_in_cents",
-//	"limited_time_offer_savings_in_cents",
-//	"limited_time_offer_ends_on",
-//	"bonus_reward_miles",
-//	"bonus_reward_miles_ends_on",
-//	"stock_type",
-//	"primary_category",
-//	"secondary_category",
-//	"origin",
-//	"package",
-//	"package_unit_type",
-//	"package_unit_volume_in_milliliters",
-//	"total_package_units",
-//	"volume_in_milliliters",
-//	"alcohol_content",
-//	"price_per_liter_of_alcohol_in_cents",
-//	"price_per_liter_in_cents",
-//	"inventory_count",
-//	"inventory_volume_in_milliliters",
-//	"inventory_price_in_cents",
-//	"sugar_content",
-//	"producer_name",
-//	"released_on",
-//	"has_value_added_promotion",
-//	"has_limited_time_offer",
-//	"has_bonus_reward_miles",
-//	"is_seasonal",
-//	"is_vqa",
-//	"is_ocb",
-//	"is_kosher",
-//	"value_added_promotion_description",
-//	"description",
-//	"serving_suggestion",
-//	"tasting_note",
-//	"updated_at",
-//	"image_thumb_url",
-//	"image_url",
-//	"varietal",
-//	"style",
-//	"tertiary_category",
-//	"sugar_in_grams_per_liter",
-//	"clearance_sale_savings_in_cents",
-//	"has_clearance_sale",
-//	"product_no"
-//})
 @Entity
 public class Product {
 	///////////////////////////////////////
@@ -74,49 +13,70 @@ public class Product {
 	///////////////////////////////////////
 	@Id
 	private Long id;
+	@JsonProperty("id_dead")
 	private Boolean isDead;
+	@JsonProperty("name")
 	private String name;
+	@Column(length=500)
+	@JsonProperty("tags")
 	private String tags;
+	@JsonProperty("is_discontinued")
 	private Boolean isDiscontinued;
+	@JsonProperty("price_in_cents")
 	private Long priceInCents;
-	private Long regularPriceInCents;
-	private Long limitedTimeOfferSavingsInCents;
-	private Long bonusRewardMiles;
+	@JsonProperty("stock_type")
 	private String stockType;
+	@JsonProperty("primary_category")
 	private String primaryCategory;
+	@JsonProperty("secondary_category")
 	private String secondaryCategory;
+	@JsonProperty("origin")
 	private String origin;
+	@JsonProperty("package_unit_type")
 	private String packageUnitType;
+	@JsonProperty("package_unit_volume_in_milliliters")
 	private Long packageUnitVolumeInMilliliters;
+	@JsonProperty("total_package_units")
 	private Long totalPackageUnits;
+	@JsonProperty("volume_in_milliliters")
 	private Long volumeInMilliliters;
+	@JsonProperty("alcohol_content")
 	private Long alcoholContent;
-	private Long pricePerLiterOfAlcoholInCents;
-	private Long pricePerLiterInCents;
-	private Long inventoryCount;
-	private Long inventoryVolumeInMilliliters;
-	private Long inventoryPriceInCents;
+	@JsonProperty("producer_name")
 	private String producerName;
+	@JsonProperty("released_on")
 	private String releasedOn;
-	private Boolean hasValueAddedPromotion;
-	private Boolean hasLimitedTimeOffer;
-	private Boolean hasBonusRewardMiles;
+	@JsonProperty("is_seasonal")
 	private Boolean isSeasonal;
+	@JsonProperty("is_vqa")
 	private Boolean isVqa;
+	@JsonProperty("is_ocb")
 	private Boolean isOcb;
+	@JsonProperty("is_kosher")
 	private Boolean isKosher;
+	@Column(length=2000)
+	@JsonProperty("description")
 	private String description;
+	@Column(length=2000)
+	@JsonProperty("serving_suggestion")
 	private String servingSuggestion;
+	@Column(length=2000)
+	@JsonProperty("tasting_note")
 	private String tastingNote;
+	@JsonProperty("updated_at")
 	private String updatedAt;
+	@Column(length=500)
+	@JsonProperty("image_thumb_url")
 	private String imageThumbUrl;
+	@Column(length=500)
+	@JsonProperty("image_url")
 	private String imageUrl;
+	@JsonProperty("varietal")
 	private String varietal;
+	@JsonProperty("style")
 	private String style;
+	@JsonProperty("tertiary_category")
 	private String tertiaryCategory;
-	private Long clearanceSaleSavingsInCents;
-	private Boolean hasClearanceSale;
-	private Long productNo;
 	
 
 	public Long getId() {
@@ -166,32 +126,6 @@ public class Product {
 	public void setPriceInCents(Long priceInCents) {
 		this.priceInCents = priceInCents;
 	}
-
-	public Long getRegularPriceInCents() {
-		return regularPriceInCents;
-	}
-
-	public void setRegularPriceInCents(Long regularPriceInCents) {
-		this.regularPriceInCents = regularPriceInCents;
-	}
-
-	public Long getLimitedTimeOfferSavingsInCents() {
-		return limitedTimeOfferSavingsInCents;
-	}
-
-	public void setLimitedTimeOfferSavingsInCents(Long limitedTimeOfferSavingsInCents) {
-		this.limitedTimeOfferSavingsInCents = limitedTimeOfferSavingsInCents;
-	}
-
-
-	public Long getBonusRewardMiles() {
-		return bonusRewardMiles;
-	}
-
-	public void setBonusRewardMiles(Long bonusRewardMiles) {
-		this.bonusRewardMiles = bonusRewardMiles;
-	}
-
 
 	public String getStockType() {
 		return stockType;
@@ -267,48 +201,6 @@ public class Product {
 		this.alcoholContent = alcoholContent;
 	}
 
-	public Long getPricePerLiterOfAlcoholInCents() {
-		return pricePerLiterOfAlcoholInCents;
-	}
-
-	public void setPricePerLiterOfAlcoholInCents(Long pricePerLiterOfAlcoholInCents) {
-		this.pricePerLiterOfAlcoholInCents = pricePerLiterOfAlcoholInCents;
-	}
-
-	public Long getPricePerLiterInCents() {
-		return pricePerLiterInCents;
-	}
-
-	public void setPricePerLiterInCents(Long pricePerLiterInCents) {
-		this.pricePerLiterInCents = pricePerLiterInCents;
-	}
-
-	public Long getInventoryCount() {
-		return inventoryCount;
-	}
-
-	public void setInventoryCount(Long inventoryCount) {
-		this.inventoryCount = inventoryCount;
-	}
-
-	public Long getInventoryVolumeInMilliliters() {
-		return inventoryVolumeInMilliliters;
-	}
-
-	public void setInventoryVolumeInMilliliters(Long inventoryVolumeInMilliliters) {
-		this.inventoryVolumeInMilliliters = inventoryVolumeInMilliliters;
-	}
-
-	public Long getInventoryPriceInCents() {
-		return inventoryPriceInCents;
-	}
-
-	public void setInventoryPriceInCents(Long inventoryPriceInCents) {
-		this.inventoryPriceInCents = inventoryPriceInCents;
-	}
-
-
-
 	public String getProducerName() {
 		return producerName;
 	}
@@ -323,30 +215,6 @@ public class Product {
 
 	public void setReleasedOn(String releasedOn) {
 		this.releasedOn = releasedOn;
-	}
-
-	public Boolean getHasValueAddedPromotion() {
-		return hasValueAddedPromotion;
-	}
-
-	public void setHasValueAddedPromotion(Boolean hasValueAddedPromotion) {
-		this.hasValueAddedPromotion = hasValueAddedPromotion;
-	}
-
-	public Boolean getHasLimitedTimeOffer() {
-		return hasLimitedTimeOffer;
-	}
-
-	public void setHasLimitedTimeOffer(Boolean hasLimitedTimeOffer) {
-		this.hasLimitedTimeOffer = hasLimitedTimeOffer;
-	}
-
-	public Boolean getHasBonusRewardMiles() {
-		return hasBonusRewardMiles;
-	}
-
-	public void setHasBonusRewardMiles(Boolean hasBonusRewardMiles) {
-		this.hasBonusRewardMiles = hasBonusRewardMiles;
 	}
 
 	public Boolean getIsSeasonal() {
@@ -455,56 +323,23 @@ public class Product {
 		this.tertiaryCategory = tertiaryCategory;
 	}
 
-	public Long getClearanceSaleSavingsInCents() {
-		return clearanceSaleSavingsInCents;
-	}
-
-	public void setClearanceSaleSavingsInCents(Long clearanceSaleSavingsInCents) {
-		this.clearanceSaleSavingsInCents = clearanceSaleSavingsInCents;
-	}
-
-	public Boolean getHasClearanceSale() {
-		return hasClearanceSale;
-	}
-
-	public void setHasClearanceSale(Boolean hasClearanceSale) {
-		this.hasClearanceSale = hasClearanceSale;
-	}
-
-	public Long getProductNo() {
-		return productNo;
-	}
-
-	public void setProductNo(Long productNo) {
-		this.productNo = productNo;
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", isDead=" + isDead + ", name=" + name + ", tags=" + tags + ", isDiscontinued="
+				+ isDiscontinued + ", priceInCents=" + priceInCents + ", stockType=" + stockType + ", primaryCategory="
+				+ primaryCategory + ", secondaryCategory=" + secondaryCategory + ", origin=" + origin
+				+ ", packageUnitType=" + packageUnitType + ", packageUnitVolumeInMilliliters="
+				+ packageUnitVolumeInMilliliters + ", totalPackageUnits=" + totalPackageUnits + ", volumeInMilliliters="
+				+ volumeInMilliliters + ", alcoholContent=" + alcoholContent + ", producerName=" + producerName
+				+ ", releasedOn=" + releasedOn + ", isSeasonal=" + isSeasonal + ", isVqa=" + isVqa + ", isOcb=" + isOcb
+				+ ", isKosher=" + isKosher + ", description=" + description + ", servingSuggestion=" + servingSuggestion
+				+ ", tastingNote=" + tastingNote + ", updatedAt=" + updatedAt + ", imageThumbUrl=" + imageThumbUrl
+				+ ", imageUrl=" + imageUrl + ", varietal=" + varietal + ", style=" + style + ", tertiaryCategory="
+				+ tertiaryCategory + "]";
 	}
 
 	
 
 
-	@Override
-	public String toString() {
-		return "LCBOItem [id=" + id + ", isDead=" + isDead + ", name=" + name + ", tags=" + tags + ", isDiscontinued="
-				+ isDiscontinued + ", priceInCents=" + priceInCents + ", regularPriceInCents=" + regularPriceInCents
-				+ ", limitedTimeOfferSavingsInCents=" + limitedTimeOfferSavingsInCents + ", limitedTimeOfferEndsOn="
-				+ ", bonusRewardMiles=" + bonusRewardMiles + ", bonusRewardMilesEndsOn="
-				+ ", stockType=" + stockType + ", primaryCategory=" + primaryCategory
-				+ ", secondaryCategory=" + secondaryCategory + ", origin=" + origin + ", _package="
-				+ ", packageUnitType=" + packageUnitType + ", packageUnitVolumeInMilliliters="
-				+ packageUnitVolumeInMilliliters + ", totalPackageUnits=" + totalPackageUnits + ", volumeInMilliliters="
-				+ volumeInMilliliters + ", alcoholContent=" + alcoholContent + ", pricePerLiterOfAlcoholInCents="
-				+ pricePerLiterOfAlcoholInCents + ", pricePerLiterInCents=" + pricePerLiterInCents + ", inventoryCount="
-				+ inventoryCount + ", inventoryVolumeInMilliliters=" + inventoryVolumeInMilliliters
-				+ ", inventoryPriceInCents=" + inventoryPriceInCents + ", sugarContent="
-				+ ", producerName=" + producerName + ", releasedOn=" + releasedOn + ", hasValueAddedPromotion="
-				+ hasValueAddedPromotion + ", hasLimitedTimeOffer=" + hasLimitedTimeOffer + ", hasBonusRewardMiles="
-				+ hasBonusRewardMiles + ", isSeasonal=" + isSeasonal + ", isVqa=" + isVqa + ", isOcb=" + isOcb
-				+ ", isKosher=" + isKosher + ", valueAddedPromotionDescription="
-				+ ", description=" + description + ", servingSuggestion=" + servingSuggestion + ", tastingNote="
-				+ tastingNote + ", updatedAt=" + updatedAt + ", imageThumbUrl=" + imageThumbUrl + ", imageUrl="
-				+ imageUrl + ", varietal=" + varietal + ", style=" + style + ", tertiaryCategory=" + tertiaryCategory
-				+ ", sugarInGramsPerLiter=" + ", clearanceSaleSavingsInCents="
-				+ clearanceSaleSavingsInCents + ", hasClearanceSale=" + hasClearanceSale + ", productNo=" + productNo
-				+ ", additionalProperties=" + "]";
-	}	
+	
 }
