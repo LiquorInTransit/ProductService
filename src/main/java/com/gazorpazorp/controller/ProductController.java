@@ -1,5 +1,6 @@
 package com.gazorpazorp.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gazorpazorp.model.Product;
@@ -21,10 +23,17 @@ public class ProductController {
 	ProductService productService;
 	
 	@GetMapping("/{productId}")
-	public ResponseEntity getSampleById (@PathVariable Long productId) throws Exception {
+	public ResponseEntity getProductById (@PathVariable Long productId) throws Exception {
 		return Optional.ofNullable(productService.getProductById(productId))
 				.map(p -> new ResponseEntity<Product>(p, HttpStatus.OK))
 				.orElseThrow(() -> new Exception("An unknown error has occured."));
+	}
+	
+	@GetMapping
+	public ResponseEntity getProductsById(@RequestParam("productIds") String productIds) {
+		return Optional.ofNullable(productService.getProductsById(productIds))
+				.map(result -> new ResponseEntity<List<Product>>(result, HttpStatus.OK))
+				.orElse(new ResponseEntity(HttpStatus.NOT_FOUND));
 	}
 
 	

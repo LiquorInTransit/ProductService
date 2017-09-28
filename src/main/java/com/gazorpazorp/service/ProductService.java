@@ -1,5 +1,9 @@
 package com.gazorpazorp.service;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +23,7 @@ public class ProductService {
 	@Autowired
 	LCBOClient lcboClient;
 	
-	
+	//TODO: These will not contact the lcboapi. they will contact the repo.
 	String key = "MDo1NDQwN2RjYy0wMDhkLTExZTctYWEwNy0yMzI4NjgxOTRjOWU6V2hSaDdoOXBVbjFjTU80cUtBZlpxRkI4UlJDVWcxRWlBUWZZ";
 	
 	//this shit is working and its a pain in my fucking asshole
@@ -31,5 +35,9 @@ public class ProductService {
 		ProductResult result = restTemplate.exchange("https://www.lcboapi.com/products/"+productId, HttpMethod.GET, entity, ProductResult.class).getBody();
 		System.out.println(result.getResult());
 		return result.getResult();
+	}
+	
+	public List<Product> getProductsById(String productIds) {
+		return Arrays.asList(productIds.split(",")).stream().map(id -> getProductById(Long.parseLong(id))).collect(Collectors.toList());
 	}
 }
