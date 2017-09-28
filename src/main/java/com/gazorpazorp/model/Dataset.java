@@ -8,6 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Dataset {
 	public Dataset() {}
+	
+	@JsonProperty("id")
+	private int id;
+	
+	
 	@JsonProperty("total_products")
 	private Long totalProducts;
 	@JsonProperty("total_stores")
@@ -32,6 +37,13 @@ public class Dataset {
 	
 	
 	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public Long getTotalProducts() {
 		return totalProducts;
 	}

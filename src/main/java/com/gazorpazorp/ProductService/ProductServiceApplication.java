@@ -9,11 +9,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 import com.gazorpazorp.service.ProductRepositoryCreationService;
+import com.gazorpazorp.service.ProductRepositoryUpdateService;
 
 @SpringBootApplication(scanBasePackages="com.gazorpazorp")
 @EnableJpaRepositories("com.gazorpazorp.repository")
@@ -30,16 +33,28 @@ public class ProductServiceApplication {
 	
 	@Autowired
 	ProductRepositoryCreationService PRCService;
+	@Autowired
+	ProductRepositoryUpdateService PRUService;
 	
-//	@PostConstruct
-//	public void getProducts() {
-//		PRCService.start();
-//	}
+	@PostConstruct
+	public void getProducts() {
+		PRCService.start();
+	}
+	
+	@Scheduled(cron = "0 0 2 * * *")
+	public void updateRepo() {
+		PRUService.start();
+	}
 	
 	@PostConstruct
 	public void getDbManager(){
 	   DatabaseManagerSwing.main(
 		new String[] { "--url", "jdbc:hsqldb:mem:test://localhost/test", "--user", "SA", "--password", ""});
+	}
+	
+	@Bean
+	public Integer latestUpdate() {
+		return 0;
 	}
 	
 //	@Bean

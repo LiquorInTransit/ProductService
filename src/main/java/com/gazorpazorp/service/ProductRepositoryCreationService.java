@@ -1,5 +1,7 @@
 package com.gazorpazorp.service;
 
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,11 @@ public class ProductRepositoryCreationService extends Thread {
 	ProductService productService;
 
 	String key = "MDo1NDQwN2RjYy0wMDhkLTExZTctYWEwNy0yMzI4NjgxOTRjOWU6V2hSaDdoOXBVbjFjTU80cUtBZlpxRkI4UlJDVWcxRWlBUWZZ";
+	String initalDatasetId = "2340";
+	
+	@Autowired
+	Integer latestUpdate;
+//	int latestDatasetUpdate = 0;
 
 	@Override
 	public void run() {
@@ -33,29 +40,62 @@ public class ProductRepositoryCreationService extends Thread {
 		headers.set(headers.AUTHORIZATION, "Token " + key);
 		HttpEntity entity = new HttpEntity(headers);
 
-		Dataset result = datasetTemplate
-				.exchange("https://www.lcboapi.com/datasets/latest", HttpMethod.GET, entity, DatasetResult.class)
+		Dataset initialSet = datasetTemplate
+				.exchange("https://www.lcboapi.com/datasets/"+initalDatasetId, HttpMethod.GET, entity, DatasetResult.class)
 				.getBody().getResult();
 
-		// loop through the products, get them all, and save them all
-		parseAndSaveDataset(result);
+		logger.info("Starting the initial update to latest");
+		updateFromDataset(initialSet);
 
 	}
+	
+	private void updateFromDataset(Dataset initialDataset) {
+		RestTemplate datasetTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(headers.AUTHORIZATION, "Token " + key);
+		HttpEntity entity = new HttpEntity(headers);
 
-	private void parseAndSaveDataset(Dataset dataset) {
-
-		for (long x = 0; x < dataset.getTotalProducts(); x++) {
-			Long id = dataset.getProductIds().get((int) x);
-			try {
-				productRepo.save(productService.getProductById(id));
-			} catch (Exception e) {
-				//e.printStackTrace();
-				logger.error("Failed to persist product with id: " + id + ". " + e.getMessage());
-			}
-			if (x % 100 == 0)
-				productRepo.flush();
+		Dataset latestDataset = datasetTemplate
+				.exchange("https://www.lcboapi.com/datasets/latest", HttpMethod.GET, entity, DatasetResult.class)
+				.getBody().getResult();
+		
+		//Get all updates up to the latest dataset
+		for (int x = initialDataset.getId()+1; x<latestDataset.getId(); x++) {
+			
+			Dataset dataset = datasetTemplate
+					.exchange("https://www.lcboapi.com/datasets/"+x, HttpMethod.GET, entity, DatasetResult.class)
+					.getBody().getResult();
+			logger.info("Updating to dataset" + dataset.getId());
+			addProducts(dataset);
+			removeProducts(dataset);
 		}
-
+		//Update from the latest dataset
+		logger.info("Updating to latest dataset");
+		addProducts(latestDataset);
+		removeProducts(latestDataset);
+		latestUpdate=latestDataset.getId();
+	}
+	
+	private void addProducts(Dataset dataset) {
+		productRepo.saveAll(productService.getProductsById(dataset.getAddedProductIds().stream().map(Object::toString).collect(Collectors.joining(","))));
+	}
+	private void removeProducts(Dataset dataset) {
+		dataset.getRemovedProductIds().forEach(id -> productRepo.deleteById(id));
 	}
 
+//	private void parseAndCreateRepoFromDataset(Dataset dataset) {
+//
+//		for (long x = 0; x < dataset.getTotalProducts(); x++) {
+//			Long id = dataset.getProductIds().get((int) x);
+//			try {
+//					productRepo.save(productService.getProductById(id));
+//			} catch (Exception e) {
+//				//e.printStackTrace();
+//				logger.error("Failed to persist product with id: " + id + ". " + e.getMessage());
+//			}
+//			if (x % 100 == 0)
+//				productRepo.flush();
+//		}
+//		logger.info("IMPORT COMPLETE");
+//	}
 }
