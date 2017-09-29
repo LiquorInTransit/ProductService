@@ -1,10 +1,9 @@
 package com.gazorpazorp.repository;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -15,9 +14,21 @@ import com.gazorpazorp.model.Product;
 @RepositoryRestResource(path="products")
 public interface ProductRestRepository extends PagingAndSortingRepository<Product, Long>{
 	
-	@RestResource(path="category")
-	public Page<Product> findBySecondaryCategoryIgnoreCase(@Param("secondaryCategory")String category, Pageable p);
 	
+	
+	@RestResource(path="secondary_category")
+	public Page<Product> findBySecondaryCategoryIgnoreCase(@Param("secondaryCategory") String category, Pageable p);
+	
+	@RestResource(path="primary_category")
+	public Page<Product> findByPrimaryCategoryIgnoreCase(@Param("primaryCategory") String category, Pageable p);
+	
+	@RestResource(path="tags")
+	public Page<Product> findByTagsIgnoreCaseContaining(@Param("tags") String tags, Pageable p);
+	
+	
+	@Override
+	@RestResource(exported=false)
+	List<Product> findAllById(Iterable<Long> ids);
 	
 	/*
 	 * Excluded endpoints
@@ -46,19 +57,4 @@ public interface ProductRestRepository extends PagingAndSortingRepository<Produc
 	@Override
 	@RestResource(exported=false)
 	<S extends Product> Iterable<S> saveAll(Iterable<S> entities);
-//	@Override
-//	@RestResource(exported=false)
-//	Iterable<Product> findAll(Sort sort);
-//
-//	@Override
-//	@RestResource(exported=false)
-//	Page<Product> findAll(Pageable pageable);
-//	
-//	@Override
-//	@RestResource(exported=false)
-//	Iterable<Product> findAll();
-//	
-//	@Override
-//	@RestResource(exported=false)
-//	Optional<Product> findById(Long id);
 }

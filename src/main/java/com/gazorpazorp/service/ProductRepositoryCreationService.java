@@ -14,14 +14,14 @@ import org.springframework.web.client.RestTemplate;
 import com.gazorpazorp.client.LCBOClient;
 import com.gazorpazorp.model.Dataset;
 import com.gazorpazorp.model.DatasetResult;
-import com.gazorpazorp.repository.ProductRepository;
+import com.gazorpazorp.repository.ProductRestRepository;
 
 @Service
 public class ProductRepositoryCreationService extends Thread {
 	Logger logger = LoggerFactory.getLogger(ProductRepositoryCreationService.class);
 
 	@Autowired
-	ProductRepository productRepo;
+	ProductRestRepository productRepo;
 
 	@Autowired
 	LCBOClient lcboService;

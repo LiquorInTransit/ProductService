@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import com.gazorpazorp.client.LCBOClient;
 import com.gazorpazorp.model.Dataset;
 import com.gazorpazorp.model.DatasetResult;
-import com.gazorpazorp.repository.ProductRepository;
+import com.gazorpazorp.repository.ProductRestRepository;
 
 @Service
 public class ProductRepositoryUpdateService extends Thread {
@@ -24,7 +24,7 @@ public class ProductRepositoryUpdateService extends Thread {
 	DatasetUpdateMgr updateMgr;
 	
 	@Autowired
-	ProductRepository productRepo;
+	ProductRestRepository productRepo;
 	@Autowired
 	LCBOClient lcboClient;
 	
