@@ -12,8 +12,9 @@ public class Product {
 	//LCBO-API Stored Properties
 	///////////////////////////////////////
 	@Id
+	@JsonProperty("id")
 	private Long id;
-	@JsonProperty("id_dead")
+	@JsonProperty("is_dead")
 	private Boolean isDead;
 	@JsonProperty("name")
 	private String name;

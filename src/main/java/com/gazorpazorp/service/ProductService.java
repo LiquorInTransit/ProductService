@@ -24,12 +24,12 @@ public class ProductService {
 	//TODO: These will not contact the lcboapi. they will contact the repo.
 	String key = "MDo1NDQwN2RjYy0wMDhkLTExZTctYWEwNy0yMzI4NjgxOTRjOWU6V2hSaDdoOXBVbjFjTU80cUtBZlpxRkI4UlJDVWcxRWlBUWZZ";
 	
-	//this shit is working and its a pain in my fucking asshole
 	public Product getProductById(Long productId) {
 		return productRepo.findById(productId).get();
 	}
 	
 	public List<Product> getProductsById(String productIds) {
-		return Arrays.asList(productIds.split(",")).stream().map(id -> getProductById(Long.parseLong(id))).collect(Collectors.toList());
+		return productRepo.findAllById(Arrays.asList(productIds.split(",")).stream().map(Long::parseLong).collect(Collectors.toList()));
+		//return Arrays.asList(productIds.split(",")).stream().map(id -> getProductById(Long.parseLong(id))).collect(Collectors.toList());
 	}
 }
