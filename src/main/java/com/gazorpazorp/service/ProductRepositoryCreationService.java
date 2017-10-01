@@ -11,7 +11,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.gazorpazorp.client.LCBOClient;
 import com.gazorpazorp.model.Dataset;
 import com.gazorpazorp.model.DatasetResult;
 import com.gazorpazorp.repository.ProductRestRepository;
@@ -24,7 +23,7 @@ public class ProductRepositoryCreationService extends Thread {
 	ProductRestRepository productRepo;
 
 	@Autowired
-	LCBOClient lcboService;
+	ProductService productService;
 
 	String key = "MDo1NDQwN2RjYy0wMDhkLTExZTctYWEwNy0yMzI4NjgxOTRjOWU6V2hSaDdoOXBVbjFjTU80cUtBZlpxRkI4UlJDVWcxRWlBUWZZ";
 	String initalDatasetId = "2340";
@@ -79,7 +78,7 @@ public class ProductRepositoryCreationService extends Thread {
 	}
 	
 	private void addProducts(Dataset dataset) {
-		productRepo.saveAll(lcboService.getProductsById(dataset.getAddedProductIds().stream().map(Object::toString).collect(Collectors.joining(","))));
+		productRepo.saveAll(productService.getLCBOProductsById(dataset.getAddedProductIds().stream().map(Object::toString).collect(Collectors.joining(","))));
 	}
 	private void removeProducts(Dataset dataset) {
 		dataset.getRemovedProductIds().forEach(id -> productRepo.deleteById(id));
