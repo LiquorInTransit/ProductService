@@ -33,6 +33,6 @@ public class ProductService {
 	}
 	
 	public List<Product> getLCBOProductsById(String productIds) {
-		return Arrays.asList(productIds.split(",")).stream().map(id -> lcboClient.getProductById(Long.parseLong(id)).getResult()).collect(Collectors.toList()).stream().peek(System.out::println).collect(Collectors.toList());
+		return Arrays.asList(productIds.split(",")).stream().map(id -> lcboClient.getProductById(Long.parseLong(id)).getResult()).collect(Collectors.toList()).stream().collect(Collectors.toList());
 	}
 }
