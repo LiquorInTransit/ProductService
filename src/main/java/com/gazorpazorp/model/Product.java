@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -33,6 +34,9 @@ public class Product {
 	private String secondaryCategory;
 	@JsonProperty("origin")
 	private String origin;
+	//TODO: Readd these
+//	@JsonProperty("package")
+//	private String packageType;
 	@JsonProperty("package_unit_type")
 	private String packageUnitType;
 	@JsonProperty("package_unit_volume_in_milliliters")
@@ -158,9 +162,16 @@ public class Product {
 
 	public void setOrigin(String origin) {
 		this.origin = origin;
-	}
+	}	
 
-
+	//TODO: Readd these
+//	public String getPackageType() {
+//		return packageType;
+//	}
+//
+//	public void setPackageType(String packageType) {
+//		this.packageType = packageType;
+//	}
 
 	public String getPackageUnitType() {
 		return packageUnitType;
