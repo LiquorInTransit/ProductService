@@ -16,10 +16,10 @@ public interface ProductRestRepository extends PagingAndSortingRepository<Produc
 	
 	
 	
-	@RestResource(path="secondary_category")
+	@RestResource(path="secondaryCategory")
 	public Page<Product> findBySecondaryCategoryIgnoreCase(@Param("secondaryCategory") String category, Pageable p);
 	
-	@RestResource(path="primary_category")
+	@RestResource(path="primaryCategory")
 	public Page<Product> findByPrimaryCategoryIgnoreCase(@Param("primaryCategory") String category, Pageable p);
 	
 	@RestResource(path="tags")
