@@ -65,11 +65,11 @@
     yum: name=* state=latest
     become: true
     
-  - name: Stop syslogging
-    service:
-      name: rsyslog
-      state: stopped
-    become: true
+#  - name: Stop syslogging
+#    service:
+#      name: rsyslog
+#      state: stopped
+#    become: true
   
   - name: Install JDK
     yum:
@@ -89,6 +89,12 @@
        src: target/ProductService-0.0.1-SNAPSHOT.jar
        dest: /home/ec2-user/app/target/
        mode: 0700
+       
+  - name: Send the .conf file accross to the new instance
+    copy:
+      src: ProductService-0.0.1-SNAPSHOT.conf
+      dest: /home/ec2-user/app/target
+      mode: 0700
 
   - name: Build a link to the executable so it becomes a service
     file:
