@@ -1,5 +1,6 @@
 package com.gazorpazorp.service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.gazorpazorp.model.Dataset;
 import com.gazorpazorp.model.DatasetResult;
+import com.gazorpazorp.model.Product;
 import com.gazorpazorp.repository.ProductRestRepository;
 
 @Service
@@ -26,7 +28,7 @@ public class ProductRepositoryCreationService extends Thread {
 	ProductService productService;
 
 	String key = "MDo1NDQwN2RjYy0wMDhkLTExZTctYWEwNy0yMzI4NjgxOTRjOWU6V2hSaDdoOXBVbjFjTU80cUtBZlpxRkI4UlJDVWcxRWlBUWZZ";
-	String initalDatasetId = "2340";
+	String initalDatasetId = "2358";
 	
 	@Autowired
 	DatasetUpdateMgr updateMgr;
@@ -47,6 +49,12 @@ public class ProductRepositoryCreationService extends Thread {
 		logger.info("Starting the initial update to latest");
 		updateFromDataset(initialSet);
 
+//		Dataset initialSet = datasetTemplate
+//				.exchange("https://www.lcboapi.com/datasets/latest", HttpMethod.GET, entity, DatasetResult.class)
+//				.getBody().getResult();
+//
+//		logger.info("Starting the initial update to latest");
+//		parseAndCreateRepoFromDataset(initialSet);
 	}
 	
 	private void updateFromDataset(Dataset initialDataset) {
@@ -78,10 +86,19 @@ public class ProductRepositoryCreationService extends Thread {
 	}
 	
 	private void addProducts(Dataset dataset) {
-		productRepo.saveAll(productService.getLCBOProductsById(dataset.getAddedProductIds().stream().map(Object::toString).collect(Collectors.joining(","))));
+		List<Product> products = productService.getLCBOProductsById(dataset.getAddedProductIds().stream().map(Object::toString).collect(Collectors.joining(",")));
+		products.forEach(p -> productService.replaceSadCharactersOnProduct(p));
+		productRepo.saveAll(products);	
 	}
 	private void removeProducts(Dataset dataset) {
-		dataset.getRemovedProductIds().forEach(id -> productRepo.deleteById(id));
+		dataset.getRemovedProductIds()
+			.forEach(id -> {
+				try {
+					productRepo.deleteById(id);
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			});
 	}
 
 //	private void parseAndCreateRepoFromDataset(Dataset dataset) {
@@ -93,6 +110,7 @@ public class ProductRepositoryCreationService extends Thread {
 //			} catch (Exception e) {
 //				//e.printStackTrace();
 //				logger.error("Failed to persist product with id: " + id + ". " + e.getMessage());
+//				e.printStackTrace();
 //			}
 //			if (x % 100 == 0)
 //				productRepo.flush();

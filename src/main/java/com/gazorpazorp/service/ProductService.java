@@ -24,7 +24,40 @@ public class ProductService {
 	String key = "MDo1NDQwN2RjYy0wMDhkLTExZTctYWEwNy0yMzI4NjgxOTRjOWU6V2hSaDdoOXBVbjFjTU80cUtBZlpxRkI4UlJDVWcxRWlBUWZZ";
 	
 	public Product getProductById(Long productId) {
-		return productRepo.findById(productId).get();
+		return productRepo.findById(productId).orElse(null);
+//		Product product = lcboClient.getProductById(productId).getResult();
+//		replaceSadCharacters(product.getName());
+//		replaceSadCharacters(product.getDescription());
+//		replaceSadCharacters(product.getTastingNote());
+//		replaceSadCharacters(product.getSecondaryCategory());
+//		replaceSadCharacters(product.getProducerName());
+//		replaceSadCharacters(product.getServingSuggestion());
+//		return product;
+	}
+	
+	public void replaceSadCharactersOnProduct(Product product) {
+		replaceSadCharacters(product.getName());
+		replaceSadCharacters(product.getDescription());
+		replaceSadCharacters(product.getTastingNote());
+		replaceSadCharacters(product.getSecondaryCategory());
+		replaceSadCharacters(product.getProducerName());
+		replaceSadCharacters(product.getServingSuggestion());
+	}
+	
+	private void replaceSadCharacters(String str) {
+		if (str == null)
+			return;
+		str.replace("\\", "");    
+		str.replace("u005c", ""); 
+		str.replace("u00e9", "é");
+		str.replace("u000d", "");
+		str.replace("u00bd", "½");
+		str.replace("u00e2", "â");
+		str.replace("u00e7", "ç");
+		str.replace("u00e8", "è");
+		str.replace("u00fb", "û");
+		str.replace("u00f1", "ñ");
+		str.replace("u00f4", "ô");
 	}
 	
 	public List<Product> getProductsById(String productIds) {

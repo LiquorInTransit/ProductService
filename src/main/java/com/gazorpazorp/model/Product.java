@@ -35,8 +35,9 @@ public class Product {
 	@JsonProperty("origin")
 	private String origin;
 	//TODO: Readd these
-//	@JsonProperty("package")
-//	private String packageType;
+	@Column(name="package")
+	@JsonProperty("package")
+	private String packageType;
 	@JsonProperty("package_unit_type")
 	private String packageUnitType;
 	@JsonProperty("package_unit_volume_in_milliliters")
@@ -165,13 +166,13 @@ public class Product {
 	}	
 
 	//TODO: Readd these
-//	public String getPackageType() {
-//		return packageType;
-//	}
-//
-//	public void setPackageType(String packageType) {
-//		this.packageType = packageType;
-//	}
+	@Column(name="package")
+	public String getPackageType() {
+		return packageType;
+	}
+	public void setPackageType(String packageType) {
+		this.packageType = packageType;
+	}
 
 	public String getPackageUnitType() {
 		return packageUnitType;

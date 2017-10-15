@@ -1,5 +1,6 @@
 package com.gazorpazorp.service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.gazorpazorp.model.Dataset;
 import com.gazorpazorp.model.DatasetResult;
+import com.gazorpazorp.model.Product;
 import com.gazorpazorp.repository.ProductRestRepository;
 
 @Service
@@ -51,7 +53,9 @@ public class ProductRepositoryUpdateService extends Thread {
 	
 	
 	private void addProducts(Dataset dataset) {
-		productRepo.saveAll(productService.getLCBOProductsById(dataset.getAddedProductIds().stream().map(Object::toString).collect(Collectors.joining(","))));
+		List<Product> products = productService.getLCBOProductsById(dataset.getAddedProductIds().stream().map(Object::toString).collect(Collectors.joining(",")));
+		products.forEach(p -> productService.replaceSadCharactersOnProduct(p));
+		productRepo.saveAll(products);
 	}
 	private void removeProducts(Dataset dataset) {
 		dataset.getRemovedProductIds().forEach(id -> productRepo.deleteById(id));
